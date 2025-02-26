@@ -1,19 +1,24 @@
 import { Module } from "@nestjs/common";
 import { CacheModule } from "@nestjs/cache-manager";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { addTransactionalDataSource } from "typeorm-transactional";
+
 import TypeOrmConfig from "@/shared/configs/typeorm.config";
+import redisConfig from "@/shared/configs/redis.config";
 import TransactionInitFailedException from "@/shared/exceptions/transaction-init-failed.exception";
 
 import MemberModule from "@/domains/member/member.module";
 import PostModule from "@/domains/post/post.module";
 import AppController from "@/app.controller";
-import redisConfig from "./shared/configs/redis.config";
 
 @Module({
   imports: [
+    CacheModule.registerAsync({
+      useFactory: redisConfig,
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       envFilePath: process.env.NODE_ENV === "production" ? ".env.producton" : ".env.development",
       isGlobal: true,
@@ -30,10 +35,6 @@ import redisConfig from "./shared/configs/redis.config";
 
         return addTransactionalDataSource(datasource);
       },
-    }),
-    CacheModule.register({
-      redisConfig,
-      isGlobal: true,
     }),
     // CacheModule.registerAsync({
     //   imports: [ConfigModule],
