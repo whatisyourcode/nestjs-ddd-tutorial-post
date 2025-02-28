@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 
 import AuthorDto from "@/domains/post/application/dtos/author.dto";
 
-export default class PostPreviewDto {
+export default class PostDto {
   @IsNotEmpty()
   @IsNumber()
   readonly id: number;
@@ -11,6 +11,10 @@ export default class PostPreviewDto {
   @IsNotEmpty()
   @IsString()
   readonly title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly content: string;
 
   @IsNotEmpty()
   @ValidateNested()
@@ -21,10 +25,16 @@ export default class PostPreviewDto {
   @IsDate()
   readonly createdAt: Date;
 
-  constructor(id: number, title: string, author: AuthorDto, createdAt: Date) {
+  @IsNotEmpty()
+  @IsString()
+  readonly isDeleted: boolean;
+
+  constructor(id: number, title: string, content: string, author: AuthorDto, createdAt: Date, isDeleted: boolean) {
     this.id = id;
     this.title = title;
+    this.content = content;
     this.author = author;
     this.createdAt = createdAt;
+    this.isDeleted = isDeleted;
   }
 }

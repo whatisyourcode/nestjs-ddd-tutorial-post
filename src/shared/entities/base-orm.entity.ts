@@ -1,7 +1,7 @@
 import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 
 export default abstract class BaseOrmEntity {
-  @PrimaryGeneratedColumn({ type: "bigint" })
+  @PrimaryGeneratedColumn({ type: "int" })
   id: number;
 
   @CreateDateColumn({ type: "timestamp" })

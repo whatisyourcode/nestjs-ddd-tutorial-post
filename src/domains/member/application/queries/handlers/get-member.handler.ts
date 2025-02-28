@@ -17,7 +17,7 @@ export default class GetMemberHandler implements IQueryHandler<GetMemberQuery> {
   @Transactional()
   async execute(query: GetMemberQuery): Promise<MemberResDto> {
     const { memberId } = query;
-    const memberDto: MemberDto = await this.memberReadRepository.getMemberById(memberId);
+    const memberDto: MemberDto | null = await this.memberReadRepository.getMemberById(memberId);
     if (!memberDto) {
       throw new MemberNotFoundException();
     }

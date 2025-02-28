@@ -14,8 +14,8 @@ export default class MemberReadRepositoryImpl implements MemberReadRepository {
     private readonly memberOrmToDtoMapper: MemberOrmToDtoMapper,
   ) {}
 
-  async getMemberById(id: number): Promise<MemberDto | null> {
-    const result: MemberOrmEntity | null = await this.repository.findOne({ where: { id } });
+  async getMemberById(memberId: number): Promise<MemberDto | null> {
+    const result: MemberOrmEntity | null = await this.repository.findOne({ where: { id: memberId } });
     if (!result) {
       return null;
     }
@@ -25,8 +25,8 @@ export default class MemberReadRepositoryImpl implements MemberReadRepository {
     return dto;
   }
 
-  async getMemberByUlid(ulid: string): Promise<MemberDto | null> {
-    const result: MemberOrmEntity | null = await this.repository.findOne({ where: { ulid } });
+  async getMemberByUlid(mebmerUlid: string): Promise<MemberDto | null> {
+    const result: MemberOrmEntity | null = await this.repository.findOne({ where: { ulid: mebmerUlid } });
     if (!result) {
       return null;
     }

@@ -25,9 +25,9 @@ export default class MemberController {
     description: "Member data returned.",
     type: MemberResDto,
   })
-  @Get("/:id")
+  @Get("/:memberId")
   @HttpCode(200)
-  async getMember(@Param("id", ParseIntPipe) memberId: number): Promise<MemberResDto> {
+  async getMember(@Param("memberId", ParseIntPipe) memberId: number): Promise<MemberResDto> {
     return await this.queryBus.execute(new GetMemberQuery(memberId));
   }
 
@@ -38,11 +38,10 @@ export default class MemberController {
   @ApiResponse({
     status: 201,
     description: "Member successfully created and returned.",
-    type: RegisterResDto,
   })
   @Post("create")
   @HttpCode(201)
-  async register(@Body() registerReqDto: RegisterReqDto): Promise<RegisterResDto> {
+  async register(@Body() registerReqDto: RegisterReqDto): Promise<void> {
     return await this.commandBus.execute(new RegisterCommand(registerReqDto));
   }
 }

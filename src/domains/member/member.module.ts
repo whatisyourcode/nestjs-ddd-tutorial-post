@@ -9,7 +9,6 @@ import { MEMBER_WRITE_REPOSITORY } from "@/domains/member/domain/repositories/me
 import MemberReadRepositoryImpl from "@/domains/member/infrastructure/repositories/member-read.repository.impl";
 import MemberWriteRepositoryImpl from "@/domains/member/infrastructure/repositories/member-write.repository.impl";
 import MemberOrmEntity from "@/domains/member/infrastructure/entities/member-orm.entity";
-import MemberDomainToDtoMapper from "@/domains/member/application/mappers/member-domain-to-dto.mapper";
 import MemberDtoToDomainMapper from "@/domains/member/application/mappers/member-dto-to-domain.mapper";
 import MemberDomainToOrmMapper from "@/domains/member/infrastructure/mappers/member-domain-to-orm.mapper";
 import MemberOrmToDomainMapper from "@/domains/member/infrastructure/mappers/member-orm-to-domain.mapper";
@@ -21,9 +20,8 @@ import MemberOrmToDtoMapper from "@/domains/member/infrastructure/mappers/member
   providers: [
     RegisterHandler,
     GetMemberHandler,
-    { provide: MEMBER_WRITE_REPOSITORY, useClass: MemberWriteRepositoryImpl },
     { provide: MEMBER_READ_REPOSITORY, useClass: MemberReadRepositoryImpl },
-    MemberDomainToDtoMapper,
+    { provide: MEMBER_WRITE_REPOSITORY, useClass: MemberWriteRepositoryImpl },
     MemberDtoToDomainMapper,
     MemberDomainToOrmMapper,
     MemberOrmToDomainMapper,

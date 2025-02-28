@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 import MemberEntity from "@/domains/member/domain/entities/member.entity";
-import CreateMemberEntity from "@/domains/member/domain/entities/create-member.entity";
+import MemberCreateEntity from "@/domains/member/domain/entities/member-create.entity";
 import MemberOrmEntity from "@/domains/member/infrastructure/entities/member-orm.entity";
 
 @Injectable()
@@ -20,7 +20,7 @@ export default class MemberDomainToOrmMapper {
     return ormEntity;
   }
 
-  createDomainToOrm(entity: CreateMemberEntity): MemberOrmEntity {
+  createDomainToOrm(entity: MemberCreateEntity): MemberOrmEntity {
     const ormEntity: MemberOrmEntity = new MemberOrmEntity();
     ormEntity.name = entity.getNameVo().getName();
     ormEntity.tel = entity.getTelVo().getTel();
