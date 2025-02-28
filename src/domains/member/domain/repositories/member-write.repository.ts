@@ -1,11 +1,9 @@
 import MemberEntity from "@/domains/member/domain/entities/member.entity";
 import CreateMemberEntity from "@/domains/member/domain/entities/create-member.entity";
 
-export const MEMBER_REPOSITORY = Symbol("member repository");
+export const MEMBER_WRITE_REPOSITORY = Symbol("member write repository");
 
-export default interface MemberRepository {
-  findById(id: number): Promise<MemberEntity | null>;
-  findByUlid(ulid: string): Promise<MemberEntity | null>;
+export default interface MemberWriteRepository {
   create(entity: CreateMemberEntity): Promise<MemberEntity>;
   save(entity: MemberEntity): Promise<MemberEntity>;
   softRemove(entity: MemberEntity): Promise<void>;
