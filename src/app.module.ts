@@ -12,6 +12,7 @@ import MemberModule from "@/domains/member/member.module";
 import PostModule from "@/domains/post/post.module";
 import AppController from "@/app.controller";
 import RedisModule from "./cache/redis.module";
+import CommentModule from "./domains/comment/comment.module";
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import RedisModule from "./cache/redis.module";
     RedisModule,
     MemberModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [AppController],
 })
