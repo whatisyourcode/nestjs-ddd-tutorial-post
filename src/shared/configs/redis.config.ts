@@ -1,16 +1,9 @@
-import { createKeyv } from "@keyv/redis";
-import { Keyv } from "keyv";
-import { CacheableMemory } from "cacheable";
+import KeyvRedis, { Keyv } from "@keyv/redis";
 
-const redisConfig = async () => {
-  return {
-    stores: [
-      new Keyv({
-        store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
-      }),
-      createKeyv("redis://localhost:6379"),
-    ],
-  };
+export const REDIS_INSTANCE = Symbol("redis instance");
+
+const redisConfig = () => {
+  return new Keyv({ store: new KeyvRedis("redis://localhost:6379", { namespace: "cache" }) });
 };
 
 export default redisConfig;

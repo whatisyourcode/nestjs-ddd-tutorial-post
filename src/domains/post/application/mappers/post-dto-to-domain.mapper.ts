@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 
-import PostCreateFormDto from "@/domains/post/application/dtos/post-create-form.dto";
-import PostCreateEntity from "@/domains/post/domain/entities/post-create.entity";
+import CreatePostFormDto from "@/domains/post/application/dtos/create-post-form.dto";
+import CreatePostEntity from "@/domains/post/domain/entities/create-post.entity";
 import TitleVo from "@/domains/post/domain/vos/title.vo";
 
 @Injectable()
-export default class MemberDtoToDomainMapper {
-  createDtoToCreateDomain(dto: PostCreateFormDto, authorId: number): PostCreateEntity {
+export default class PostDtoToDomainMapper {
+  createDtoToCreateDomain(dto: CreatePostFormDto, authorId: number): CreatePostEntity {
     const { title, content } = dto;
-    const entity: PostCreateEntity = PostCreateEntity.create({
+    const entity: CreatePostEntity = CreatePostEntity.create({
       title: TitleVo.create({ title }),
       content,
       authorId,

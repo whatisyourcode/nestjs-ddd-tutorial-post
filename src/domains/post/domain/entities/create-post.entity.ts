@@ -1,12 +1,12 @@
 import TitleVo from "@/domains/post/domain/vos/title.vo";
 
-interface PostCreateProps {
+interface CreatePostProps {
   title: TitleVo;
   content: string;
   authorId: number;
 }
 
-export default class PostCreateEntity {
+export default class CreatePostEntity {
   private title: TitleVo;
   private content: string;
   private authorId: number;
@@ -17,8 +17,8 @@ export default class PostCreateEntity {
     this.authorId = authorId;
   }
 
-  static create({ title, content, authorId }: PostCreateProps): PostCreateEntity {
-    return new PostCreateEntity(title, content, authorId);
+  static create({ title, content, authorId }: CreatePostProps): CreatePostEntity {
+    return new CreatePostEntity(title, content, authorId);
   }
 
   getTitleVo(): TitleVo {

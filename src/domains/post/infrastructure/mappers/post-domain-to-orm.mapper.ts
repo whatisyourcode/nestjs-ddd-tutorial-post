@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 import PostEntity from "@/domains/post/domain/entities/post.entity";
-import PostCreateEntity from "@/domains/post/domain/entities/post-create.entity";
+import CreatePostEntity from "@/domains/post/domain/entities/create-post.entity";
 import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entity";
 
 @Injectable()
@@ -19,7 +19,7 @@ export default class PostDomainToOrmMapper {
     return ormEntity;
   }
 
-  createDomainToOrm(entity: PostCreateEntity): PostOrmEntity {
+  createDomainToOrm(entity: CreatePostEntity): PostOrmEntity {
     const ormEntity: PostOrmEntity = new PostOrmEntity();
     ormEntity.title = entity.getTitleVo().getTitle();
     ormEntity.content = entity.getContent();

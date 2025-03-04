@@ -1,6 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 
-export default class PostRemoveReqDto {
+export default class DeletePostReqDto {
   @IsNotEmpty()
   readonly postId: number;
 

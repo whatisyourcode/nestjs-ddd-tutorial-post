@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 
 import PostWriteRepository from "@/domains/post/domain/repositories/post-write.repository";
 import PostEntity from "@/domains/post/domain/entities/post.entity";
-import PostCreateEntity from "@/domains/post/domain/entities/post-create.entity";
+import CreatePostEntity from "@/domains/post/domain/entities/create-post.entity";
 import PostDomainToOrmMapper from "@/domains/post/infrastructure/mappers/post-domain-to-orm.mapper";
 import PostOrmToDomainMapper from "@/domains/post/infrastructure/mappers/post-orm-to-domain.mapper";
 import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entity";
@@ -17,7 +17,7 @@ export default class PostRepositoryImpl implements PostWriteRepository {
     private readonly postOrmToDomainMapper: PostOrmToDomainMapper,
   ) {}
 
-  async create(entity: PostCreateEntity): Promise<PostEntity> {
+  async create(entity: CreatePostEntity): Promise<PostEntity> {
     const ormEntity: PostOrmEntity = this.postDomainToOrmMapper.createDomainToOrm(entity);
     const result: PostOrmEntity = await this.repository.save(ormEntity);
     const savedEntity: PostEntity = this.postOrmToDomainMapper.ormToDomain(result);

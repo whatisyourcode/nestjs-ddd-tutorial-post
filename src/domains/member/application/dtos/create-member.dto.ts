@@ -7,7 +7,7 @@ import {
   TEL_LENGTH,
 } from "@/domains/member/domain/constants/member.constant";
 
-export default class MemberCreateDto {
+export default class CreateMemberDto {
   @ApiProperty({
     description: "The full name of the member. Should not exceed the maximum length.",
     example: "John Doe",

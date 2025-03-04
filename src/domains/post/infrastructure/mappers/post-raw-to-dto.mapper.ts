@@ -7,12 +7,11 @@ import PostRaw from "@/domains/post/infrastructure/raws/post.raw";
 import PostPreviewRaw from "@/domains/post/infrastructure/raws/post-preview.raw";
 
 @Injectable()
-export default class PostOrmToDtoMapper {
+export default class PostRawToDtoMapper {
   rawToDto(raw: PostRaw): PostDto {
     const { postId, postTitle, postContent, postCreatedAt, postDeletedAt, authorUlid, authorName } = raw;
     const isPostDeleted: boolean = !!postDeletedAt;
-
-    return new PostDto(
+    const dto: PostDto = new PostDto(
       postId,
       postTitle,
       postContent,
@@ -20,11 +19,19 @@ export default class PostOrmToDtoMapper {
       postCreatedAt,
       isPostDeleted,
     );
+
+    return dto;
   }
 
-  previewRawToDto(raw: PostPreviewRaw): PostPreviewDto {
+  previewRawToPreviewDto(raw: PostPreviewRaw): PostPreviewDto {
     const { postId, postTitle, postCreatedAt, authorUlid, authorName } = raw;
+    const dto: PostPreviewDto = new PostPreviewDto(
+      postId,
+      postTitle,
+      new AuthorDto(authorUlid, authorName),
+      postCreatedAt,
+    );
 
-    return new PostPreviewDto(postId, postTitle, new AuthorDto(authorUlid, authorName), postCreatedAt);
+    return dto;
   }
 }

@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 
 import MemberWriteRepository from "@/domains/member/domain/repositories/member-write.repository";
 import MemberEntity from "@/domains/member/domain/entities/member.entity";
-import MemberCreateEntity from "@/domains/member/domain/entities/member-create.entity";
+import CreateMemberEntity from "@/domains/member/domain/entities/create-member.entity";
 import MemberDomainToOrmMapper from "@/domains/member/infrastructure/mappers/member-domain-to-orm.mapper";
 import MemberOrmToDomainMapper from "@/domains/member/infrastructure/mappers/member-orm-to-domain.mapper";
 import MemberOrmEntity from "@/domains/member/infrastructure/entities/member-orm.entity";
@@ -17,7 +17,7 @@ export default class MemberWriteRepositoryImpl implements MemberWriteRepository 
     private readonly memberOrmToDomainMapper: MemberOrmToDomainMapper,
   ) {}
 
-  async create(entity: MemberCreateEntity): Promise<MemberEntity> {
+  async create(entity: CreateMemberEntity): Promise<MemberEntity> {
     const ormEntity: MemberOrmEntity = this.memberDomainToOrmMapper.createDomainToOrm(entity);
     const result: MemberOrmEntity = await this.repository.save(ormEntity);
     const savedEntity: MemberEntity = this.memberOrmToDomainMapper.ormToDomain(result);

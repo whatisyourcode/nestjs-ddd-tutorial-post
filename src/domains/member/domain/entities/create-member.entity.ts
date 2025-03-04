@@ -2,13 +2,13 @@ import NameVo from "@/domains/member/domain/vos/name.vo";
 import TelVo from "@/domains/member/domain/vos/tel.vo";
 import IntroductionVo from "@/domains/member/domain/vos/introduction.vo";
 
-interface MemberCreateProps {
+interface CreateMemberProps {
   name: NameVo;
   tel: TelVo;
   introduction: IntroductionVo;
 }
 
-export default class MemberCreateEntity {
+export default class CreateMemberEntity {
   private name: NameVo;
   private tel: TelVo;
   private introduction: IntroductionVo;
@@ -19,8 +19,8 @@ export default class MemberCreateEntity {
     this.introduction = introduction;
   }
 
-  static create({ name, tel, introduction }: MemberCreateProps): MemberCreateEntity {
-    return new MemberCreateEntity(name, tel, introduction);
+  static create({ name, tel, introduction }: CreateMemberProps): CreateMemberEntity {
+    return new CreateMemberEntity(name, tel, introduction);
   }
 
   getNameVo(): NameVo {

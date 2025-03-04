@@ -8,8 +8,7 @@ import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entit
 export default class PostOrmToDomainMapper {
   ormToDomain(ormEntity: PostOrmEntity): PostEntity {
     const { id, title, content, authorId, createdAt, updatedAt, deletedAt } = ormEntity;
-
-    return PostEntity.create({
+    const entity: PostEntity = PostEntity.create({
       id,
       title: TitleVo.create({ title }),
       content,
@@ -18,5 +17,7 @@ export default class PostOrmToDomainMapper {
       updatedAt,
       deletedAt,
     });
+
+    return entity;
   }
 }

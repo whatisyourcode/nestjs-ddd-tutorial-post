@@ -1,16 +1,16 @@
 import { Injectable } from "@nestjs/common";
 
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
-import AuthorCacheToDtoMapper from "@/domains/post/infrastructure/mappers/author-cache-to-dto.mapper";
+import AuthorDto from "@/domains/post/application/dtos/author.dto";
 import PostPreviewCacheEntity from "@/domains/post/infrastructure/entities/post-preview-cache.entity";
 
 @Injectable()
 export default class PostCacheToDtoMapper {
-  constructor(private readonly authorCacheToDtoMapper: AuthorCacheToDtoMapper) {}
-
   previewCacheToPreviewDto(cacheEntity: PostPreviewCacheEntity): PostPreviewDto {
     const { id, title, author, createdAt } = cacheEntity;
+    const { ulid, name } = author;
+    const dto: PostPreviewDto = new PostPreviewDto(id, title, new AuthorDto(ulid, name), createdAt);
 
-    return new PostPreviewDto(id, title, this.authorCacheToDtoMapper.cacheToDto(author), createdAt);
+    return dto;
   }
 }

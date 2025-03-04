@@ -2,19 +2,19 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-import MemberCreateDto from "@/domains/member/application/dtos/member-create.dto";
+import CreateMemberDto from "@/domains/member/application/dtos/create-member.dto";
 
 export default class RegisterReqDto {
   @ApiProperty({
     description: "The member data requested for registration. This includes the member's personal information.",
-    type: MemberCreateDto,
+    type: CreateMemberDto,
   })
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => MemberCreateDto)
-  readonly member: MemberCreateDto;
+  @Type(() => CreateMemberDto)
+  readonly member: CreateMemberDto;
 
-  constructor(member: MemberCreateDto) {
+  constructor(member: CreateMemberDto) {
     this.member = member;
   }
 }

@@ -7,7 +7,7 @@ import MemberDtoToDomainMapper from "@/domains/member/application/mappers/member
 import MemberWriteRepository, {
   MEMBER_WRITE_REPOSITORY,
 } from "@/domains/member/domain/repositories/member-write.repository";
-import MemberCreateEntity from "@/domains/member/domain/entities/member-create.entity";
+import CreateMemberEntity from "@/domains/member/domain/entities/create-member.entity";
 
 @CommandHandler(RegisterCommand)
 export default class RegisterHandler implements ICommandHandler<RegisterCommand> {
@@ -20,7 +20,7 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
   async execute(command: RegisterCommand): Promise<void> {
     const { registerReqDto } = command;
     const { member } = registerReqDto;
-    const entity: MemberCreateEntity = this.memberDtoToDomainMapper.createDtoToCreateDomain(member);
+    const entity: CreateMemberEntity = this.memberDtoToDomainMapper.createDtoToCreateDomain(member);
 
     await this.memberWriteRepository.create(entity);
   }

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export default class PostCreateFormDto {
+export default class CreatePostFormDto {
   @IsNotEmpty()
   @IsString()
   readonly title: string;

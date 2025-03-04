@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsNumber } from "class-validator";
 
-export default class PostUpdateFormDto {
+export default class UpdatePostFormDto {
   @IsNotEmpty()
   @IsNumber()
   readonly id: number;
