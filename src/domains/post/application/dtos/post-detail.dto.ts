@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export default class PostDetailDto {
     @IsNotEmpty()
@@ -14,7 +14,7 @@ export default class PostDetailDto {
     readonly content: string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsDate()
     readonly createdAt: Date;
 
     @IsNotEmpty()

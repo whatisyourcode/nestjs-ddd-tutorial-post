@@ -12,6 +12,7 @@ import TransactionInitFailedException from "@/shared/exceptions/transaction-init
 import MemberModule from "@/domains/member/member.module";
 import PostModule from "@/domains/post/post.module";
 import AppController from "@/app.controller";
+import CommentModule from "./domains/comment/comment.module";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import AppController from "@/app.controller";
     // }),
     MemberModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [AppController],
 })
