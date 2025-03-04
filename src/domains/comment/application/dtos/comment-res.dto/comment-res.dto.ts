@@ -1,7 +1,6 @@
 import { Type } from "class-transformer";
-
-import { CommentDetailDto } from "../comment-detail.dto";
 import { IsNotEmpty, ValidateNested } from "class-validator";
+import CommentDetailDto from "../comment-detail.dto";
 
 export default class CommentResDto {
   @IsNotEmpty()

@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { CqrsModule } from "@nestjs/cqrs";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { addTransactionalDataSource } from "typeorm-transactional";
 
@@ -37,16 +38,7 @@ import CommentModule from "./domains/comment/comment.module";
         return addTransactionalDataSource(datasource);
       },
     }),
-    // CacheModule.registerAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     store: redisStore,
-    //     host: configService.get<string>("REDIS_HOST",'localhost'),
-    //     port: configService.get<number>("REDIS_PORT", 6379),
-    //     ttl: 60,
-    //   }),
-    //   inject: [ConfigService],
-    // }),
+    CqrsModule.forRoot(),
     MemberModule,
     PostModule,
     CommentModule,

@@ -2,35 +2,35 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CqrsModule } from "@nestjs/cqrs";
 
-import CreateCommentUsecaseImpl from "./application/usecases/impl/create-comment.usecase.impl";
-import { CREATE_COMMENT_USECASE } from "./application/usecases/create-comment.usecase";
-import CommentMapper from "./application/mappers/comment.mapper";
 import CommentController from "./presentation/comment.controller";
 import CommentOrmEntity from "./infrastructure/entities/comment-orm.entity";
-import CommentOrmMapper from "./infrastructure/mappers/comment-orm.mapper";
-import { COMMENT_SERVICE } from "./domain/services/comment.service";
-import CommentServiceImpl from "./domain/services/impl/comment.service.impl";
-import { COMMENT_REPOSITORY } from "./domain/repositories/comment.repository";
-import CommentRepositoryImpl from "./infrastructure/repositories/comment.repository.impl";
-import { READ_COMMENT_USEACE } from "./application/usecases/read-comment.usecase";
-import ReadCommentUsecaseImpl from "./application/usecases/impl/read-comment.usecase.impl";
-import { UPDATE_COMMENT_USECASE } from "./application/usecases/update-comment.usecase";
-import UpdateCommentUsecaseImpl from "./application/usecases/impl/update-comment.usecase.impl";
-import { DELETE_COMMENT_USECASE } from "./application/usecases/delete-comment.usecase";
-import DeleteCommentUsecaseImpl from "./application/usecases/impl/delete-comment.usecase.impl";
+import { COMMENT_WRITE_REPOSITORY } from "./domain/repositories/comment-write.repository";
+import CommentRepositoryImpl from "./infrastructure/repositories/comment-write.repository.impl";
+import CommentOrmToDomainMapper from "./infrastructure/mappers/comment-orm-to-domain.mapper";
+import CommentDomainToOrmMapper from "./infrastructure/mappers/comment-domain-to-orm.mapper";
+import CommentDomainToDtoMapper from "./application/mappers/comment-domain-to-dto.mapper";
+import CommentDtoToDomainMapper from "./application/mappers/comment-dto-to-domain.mapper";
+import { COMMENT_READ_REPOSITORY } from "./domain/repositories/comment-read.repository";
+import CommentReadRepositoryImpl from "./infrastructure/repositories/comment-read.repository.impl";
+import CommentCreateHandler from "./application/commands/handlers/comment-create.handler";
+import CommentUpdateHanlder from "./application/commands/handlers/comment-update.handler";
+import CommentDeleteHandler from "./application/commands/handlers/comment-delete.handler";
+import CommentGetHandler from "./application/queries/handlers/comment-get.handler";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CommentOrmEntity]), CqrsModule],
   controllers: [CommentController],
   providers: [
-    CommentMapper,
-    { provide: CREATE_COMMENT_USECASE, useClass: CreateCommentUsecaseImpl },
-    { provide: READ_COMMENT_USEACE, useClass: ReadCommentUsecaseImpl },
-    { provide: UPDATE_COMMENT_USECASE, useClass: UpdateCommentUsecaseImpl },
-    { provide: DELETE_COMMENT_USECASE, useClass: DeleteCommentUsecaseImpl },
-    { provide: COMMENT_SERVICE, useClass: CommentServiceImpl },
-    { provide: COMMENT_REPOSITORY, useClass: CommentRepositoryImpl },
-    CommentOrmMapper,
+    CommentCreateHandler,
+    CommentUpdateHanlder,
+    CommentDeleteHandler,
+    CommentGetHandler,
+    { provide: COMMENT_WRITE_REPOSITORY, useClass: CommentRepositoryImpl },
+    { provide: COMMENT_READ_REPOSITORY, useClass: CommentReadRepositoryImpl },
+    CommentDtoToDomainMapper,
+    CommentDomainToDtoMapper,
+    CommentOrmToDomainMapper,
+    CommentDomainToOrmMapper,
   ],
 })
 export default class CommentModule {}

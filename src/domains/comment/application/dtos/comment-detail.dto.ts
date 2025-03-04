@@ -1,13 +1,13 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
 
-export class CommentDetailDto {
+export default class CommentDetailDto {
   @IsNotEmpty()
   @IsNumber()
   readonly id: number;
 
   @IsNotEmpty()
   @IsString()
-  content: string;
+  readonly content: string;
 
   @IsNotEmpty()
   @IsNumber()
