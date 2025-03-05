@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
 
-export default class PostListResDto {
+export default class PaginatedPostPreviewsResDto {
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => PostPreviewDto)

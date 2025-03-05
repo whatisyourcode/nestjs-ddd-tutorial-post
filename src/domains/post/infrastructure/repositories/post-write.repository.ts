@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import PostWriteRepository from "@/domains/post/domain/repositories/post-write.repository";
+import IPostWriteRepository from "@/domains/post/domain/repositories/post-write-repository.interface";
 import PostEntity from "@/domains/post/domain/entities/post.entity";
 import CreatePostEntity from "@/domains/post/domain/entities/create-post.entity";
 import PostDomainToOrmMapper from "@/domains/post/infrastructure/mappers/post-domain-to-orm.mapper";
@@ -10,7 +10,7 @@ import PostOrmToDomainMapper from "@/domains/post/infrastructure/mappers/post-or
 import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entity";
 
 @Injectable()
-export default class PostRepositoryImpl implements PostWriteRepository {
+export default class PostRepository implements IPostWriteRepository {
   constructor(
     @InjectRepository(PostOrmEntity) private readonly repository: Repository<PostOrmEntity>,
     private readonly postDomainToOrmMapper: PostDomainToOrmMapper,

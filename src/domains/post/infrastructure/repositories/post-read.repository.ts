@@ -4,22 +4,22 @@ import { Repository } from "typeorm";
 
 import { RECENT_PAGE_LENGTH, PAGE_SIZE } from "@/domains/post/domain/constants/post.constant";
 
-import PostDto from "@/domains/post/application/dtos/post.dto";
+import PostDetailDto from "@/domains/post/application/dtos/post-detail.dto";
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
-import PostReadRepository from "@/domains/post/domain/repositories/post-read.repository";
+import IPostReadRepository from "@/domains/post/domain/repositories/post-read-repository.interface";
 import PostRawToDtoMapper from "@/domains/post/infrastructure/mappers/post-raw-to-dto.mapper";
 import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entity";
-import PostRaw from "@/domains/post/infrastructure/raws/post.raw";
+import PostDetailRaw from "@/domains/post/infrastructure/raws/post-detail.raw";
 import PostPreviewRaw from "@/domains/post/infrastructure/raws/post-preview.raw";
 
 @Injectable()
-export default class PostReadRepositoryImpl implements PostReadRepository {
+export default class PostReadRepository implements IPostReadRepository {
   constructor(
     @InjectRepository(PostOrmEntity) private readonly repository: Repository<PostOrmEntity>,
     private readonly postRawToDtoMapper: PostRawToDtoMapper,
   ) {}
 
-  async getRecentPosts(pageSize: number = PAGE_SIZE): Promise<Map<number, PostPreviewDto[]>> {
+  async getPaginatedRecentPostPreviews(pageSize: number = PAGE_SIZE): Promise<Map<number, PostPreviewDto[]>> {
     const pageLength: number = RECENT_PAGE_LENGTH;
     const limit: number = pageLength * pageSize;
     const result: Map<number, PostPreviewDto[]> = new Map<number, PostPreviewDto[]>();
@@ -55,7 +55,7 @@ export default class PostReadRepositoryImpl implements PostReadRepository {
     return result;
   }
 
-  async getPosts(page: number, pageSize: number = PAGE_SIZE): Promise<PostPreviewDto[]> {
+  async getPaginatedPostPreviews(page: number, pageSize: number = PAGE_SIZE): Promise<PostPreviewDto[]> {
     const raws: PostPreviewRaw[] = await this.repository
       .createQueryBuilder("post")
       .leftJoin("member", "member", "post.authorId = member.id")
@@ -77,8 +77,8 @@ export default class PostReadRepositoryImpl implements PostReadRepository {
     return dtos;
   }
 
-  async getPostById(postId: number): Promise<PostDto | null> {
-    const raw: PostRaw | undefined = await this.repository
+  async getPostDetailById(postId: number): Promise<PostDetailDto | null> {
+    const raw: PostDetailRaw | undefined = await this.repository
       .createQueryBuilder("post")
       .leftJoin("member", "member", "post.authorId = member.id")
       .select([
@@ -91,13 +91,12 @@ export default class PostReadRepositoryImpl implements PostReadRepository {
         "member.name AS authorName",
       ])
       .where("post.id = :postId", { postId })
-      .getRawOne<PostRaw>();
-
+      .getRawOne<PostDetailRaw>();
     if (!raw) {
       return null;
     }
 
-    const dto: PostDto = this.postRawToDtoMapper.rawToDto(raw);
+    const dto: PostDetailDto = this.postRawToDtoMapper.detailRawToDetailDto(raw);
 
     return dto;
   }

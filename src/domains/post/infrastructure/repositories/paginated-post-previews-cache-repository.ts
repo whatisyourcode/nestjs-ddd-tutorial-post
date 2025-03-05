@@ -4,13 +4,13 @@ import Keyv from "keyv";
 import { REDIS_INSTANCE } from "@/shared/configs/redis.config";
 
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
-import PostPreviewCacheRepository from "@/domains/post/domain/repositories/post-preview-cache.repository";
+import IPaginatedPostPreviewsCacheRepository from "@/domains/post/domain/repositories/paginated-post-previews-cache-repository.interface";
 import PostCacheToDtoMapper from "@/domains/post/infrastructure/mappers/post-cache-to-dto.mapper";
 import PostDtoToCacheMapper from "@/domains/post/infrastructure/mappers/post-dto-to-cache.mapper";
 import PostPreviewCacheEntity from "@/domains/post/infrastructure/entities/post-preview-cache.entity";
 
 @Injectable()
-export default class PostPreviewCacheRepositoryImpl implements PostPreviewCacheRepository {
+export default class PaginatedPostsCacheRepository implements IPaginatedPostPreviewsCacheRepository {
   private readonly ttl: number = 600000;
 
   constructor(
@@ -19,24 +19,22 @@ export default class PostPreviewCacheRepositoryImpl implements PostPreviewCacheR
     private readonly postDtoToCacheMapper: PostDtoToCacheMapper,
   ) {}
 
-  async set(postMap: Map<number, PostPreviewDto[]>): Promise<void> {
+  async set(value: Map<number, PostPreviewDto[]>): Promise<void> {
     await Promise.all(
-      Array.from(postMap.entries()).map(async ([page, posts]) => {
+      Array.from(value.entries()).map(async ([page, posts]) => {
         const key: string = this.key(page);
-        const cacheEntity: PostPreviewCacheEntity[] = posts.map((post) =>
+        const cachedEntity: PostPreviewCacheEntity[] = posts.map((post) =>
           this.postDtoToCacheMapper.previewDtoToPreviewCache(post),
         );
 
-        return this.cacheManager.set<PostPreviewCacheEntity[]>(key, cacheEntity, this.ttl);
+        return this.cacheManager.set<PostPreviewCacheEntity[]>(key, cachedEntity, this.ttl);
       }),
     );
   }
 
   async get(page: number): Promise<PostPreviewDto[] | null> {
     const key: string = this.key(page);
-    const values: PostPreviewCacheEntity[] | undefined = await this.cacheManager.get<
-      PostPreviewCacheEntity[] | undefined
-    >(key);
+    const values: PostPreviewCacheEntity[] | undefined = await this.cacheManager.get<PostPreviewCacheEntity[]>(key);
     if (!values) {
       return null;
     }
@@ -47,6 +45,6 @@ export default class PostPreviewCacheRepositoryImpl implements PostPreviewCacheR
   }
 
   key(page: number): string {
-    return `postPreviews_page_${page}`;
+    return `post_page_${page}`;
   }
 }

@@ -1,4 +1,4 @@
-export default class GetPostQuery {
+export default class GetPostDetailQuery {
   readonly postId: number;
 
   constructor(postId: number) {

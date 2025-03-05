@@ -3,26 +3,31 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Transactional } from "typeorm-transactional";
 
 import CreatePostCommand from "@/domains/post/application/commands/create-post.command";
-import PostService, { POST_SERVICE } from "@/domains/post/application/services/post.service";
+import IPostService, { POST_SERVICE } from "@/domains/post/application/services/post-service.interface";
 import PostDtoToDomainMapper from "@/domains/post/application/mappers/post-dto-to-domain.mapper";
-import PostWriteRepository, { POST_WRITE_REPOSITORY } from "@/domains/post/domain/repositories/post-write.repository";
+import IPostWriteRepository, {
+  POST_WRITE_REPOSITORY,
+} from "@/domains/post/domain/repositories/post-write-repository.interface";
 import CreatePostEntity from "@/domains/post/domain/entities/create-post.entity";
 
 @CommandHandler(CreatePostCommand)
 export default class CreatePostHandler implements ICommandHandler<CreatePostCommand> {
   constructor(
-    @Inject(POST_SERVICE) private readonly postService: PostService,
-    @Inject(POST_WRITE_REPOSITORY) private readonly postWriteRepository: PostWriteRepository,
+    @Inject(POST_SERVICE)
+    private readonly postService: IPostService,
+    @Inject(POST_WRITE_REPOSITORY)
+    private readonly postWriteRepository: IPostWriteRepository,
     private readonly postDtoToDomainMapper: PostDtoToDomainMapper,
   ) {}
 
   @Transactional()
   async execute(command: CreatePostCommand): Promise<void> {
-    const { createPostReqDto, authorId } = command;
+    const { authorId, createPostReqDto } = command;
     const { post } = createPostReqDto;
-    const entity: CreatePostEntity = this.postDtoToDomainMapper.createDtoToCreateDomain(post, authorId);
 
+    const entity: CreatePostEntity = this.postDtoToDomainMapper.createDtoToCreateDomain(post, authorId);
     await this.postWriteRepository.create(entity);
-    await this.postService.refreshRecentPostPreviews();
+
+    await this.postService.refreshPaginatedRecentPostsCache();
   }
 }

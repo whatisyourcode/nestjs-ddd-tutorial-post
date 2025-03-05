@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 
 import AuthorDto from "@/domains/post/application/dtos/author.dto";
 
-export default class PostDto {
+export default class PostDetailDto {
   @IsNotEmpty()
   @IsNumber()
   readonly id: number;

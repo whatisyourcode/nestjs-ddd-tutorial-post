@@ -2,12 +2,12 @@ import { Controller, Get, Post, Patch, Param, Query, Body, HttpCode, ParseIntPip
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import CreatePostCommand from "@/domains/post/application/commands/create-post.command";
-import GetPostsQuery from "@/domains/post/application/queries/get-posts.query";
-import GetPostQuery from "@/domains/post/application/queries/get-post.query";
+import GetPaginatedPostPreviewsQuery from "@/domains/post/application/queries/get-paginated-post-previews.query";
+import GetPostDetailQuery from "@/domains/post/application/queries/get-post-detail.query";
 import CreatePostReqDto from "@/domains/post/application/dtos/request/create-post-req.dto";
 import UpdatePostReqDto from "@/domains/post/application/dtos/request/update-post-req.dto";
-import PostListResDto from "@/domains/post/application/dtos/response/post-list-res.dto";
-import PostResDto from "@/domains/post/application/dtos/response/post-res.dto";
+import PaginatedPostPreviewsResDto from "@/domains/post/application/dtos/response/paginated-post-previews-res.dto";
+import PostDetailResDto from "@/domains/post/application/dtos/response/post-detail-res.dto";
 
 @Controller({ path: "post", version: "1" })
 export default class PostController {
@@ -24,14 +24,14 @@ export default class PostController {
 
   @Get("list")
   @HttpCode(200)
-  async getPosts(@Query("page", ParseIntPipe) page: number): Promise<PostListResDto> {
-    return await this.queryBus.execute(new GetPostsQuery(page));
+  async getPaginatedPostPreviews(@Query("page", ParseIntPipe) page: number): Promise<PaginatedPostPreviewsResDto> {
+    return await this.queryBus.execute(new GetPaginatedPostPreviewsQuery(page));
   }
 
   @Get("detail/:postId")
   @HttpCode(200)
-  async getPostDetail(@Param("postId", ParseIntPipe) postId: number): Promise<PostResDto> {
-    return await this.queryBus.execute(new GetPostQuery(postId));
+  async getPostDetail(@Param("postId", ParseIntPipe) postId: number): Promise<PostDetailResDto> {
+    return await this.queryBus.execute(new GetPostDetailQuery(postId));
   }
 
   @Patch("update")

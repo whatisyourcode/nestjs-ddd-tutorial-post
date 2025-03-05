@@ -1,4 +1,4 @@
-export default interface PostRaw {
+export default interface PostDetailRaw {
   readonly postId: number;
   readonly postTitle: string;
   readonly postContent: string;

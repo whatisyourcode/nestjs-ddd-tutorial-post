@@ -1,4 +1,4 @@
-export default class GetPostsQuery {
+export default class GetPaginatedPostPreviewsQuery {
   readonly page: number;
 
   constructor(page: number) {

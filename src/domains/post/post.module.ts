@@ -5,17 +5,17 @@ import RedisModule from "@/cache/redis.module";
 
 import PostController from "@/domains/post/presentation/controllers/post.controller";
 import CreatePostHandler from "@/domains/post/application/commands/handlers/create-post.handler";
-import GetPostsHandler from "@/domains/post/application/queries/handlers/get-posts.handler";
-import GetPostHandler from "@/domains/post/application/queries/handlers/get-post.handler";
-import { POST_SERVICE } from "@/domains/post/application/services/post.service";
+import GetPaginatedPostPreviewsHandler from "@/domains/post/application/queries/handlers/get-paginated-post-previews.handler";
+import GetPostDetailHandler from "@/domains/post/application/queries/handlers/get-post-detail.handler";
+import { POST_SERVICE } from "@/domains/post/application/services/post-service.interface";
 import PostServiceImpl from "@/domains/post/application/services/impl/post.service.impl";
 import PostDtoToDomainMapper from "@/domains/post/application/mappers/post-dto-to-domain.mapper";
-import { POST_READ_REPOSITORY } from "@/domains/post/domain/repositories/post-read.repository";
-import { POST_WRITE_REPOSITORY } from "@/domains/post/domain/repositories/post-write.repository";
-import { POST_PREVIEW_CACHE_REPOSITORY } from "@/domains/post/domain/repositories/post-preview-cache.repository";
-import PostReadRepositoryImpl from "@/domains/post/infrastructure/repositories/post-read.repository.impl";
-import PostWriteRepositoryImpl from "@/domains/post/infrastructure/repositories/post-write.repository.impl";
-import PostPreviewCacheRepositoryImpl from "@/domains/post/infrastructure/repositories/post-preview-cache.repository.impl";
+import { POST_READ_REPOSITORY } from "@/domains/post/domain/repositories/post-read-repository.interface";
+import { POST_WRITE_REPOSITORY } from "@/domains/post/domain/repositories/post-write-repository.interface";
+import { PAGINATED_POST_PREVIEWS_CACHE_REPOSITORY } from "@/domains/post/domain/repositories/paginated-post-previews-cache-repository.interface";
+import PostReadRepository from "@/domains/post/infrastructure/repositories/post-read.repository";
+import PostWriteRepository from "@/domains/post/infrastructure/repositories/post-write.repository";
+import PaginatedPostsCacheRepository from "@/domains/post/infrastructure/repositories/paginated-post-previews-cache-repository";
 import PostOrmEntity from "@/domains/post/infrastructure/entities/post-orm.entity";
 import PostCacheToDtoMapper from "@/domains/post/infrastructure/mappers/post-cache-to-dto.mapper";
 import PostDomainToOrmMapper from "@/domains/post/infrastructure/mappers/post-domain-to-orm.mapper";
@@ -28,12 +28,12 @@ import PostRawToDtoMapper from "@/domains/post/infrastructure/mappers/post-raw-t
   controllers: [PostController],
   providers: [
     CreatePostHandler,
-    GetPostsHandler,
-    GetPostHandler,
+    GetPaginatedPostPreviewsHandler,
+    GetPostDetailHandler,
     { provide: POST_SERVICE, useClass: PostServiceImpl },
-    { provide: POST_READ_REPOSITORY, useClass: PostReadRepositoryImpl },
-    { provide: POST_WRITE_REPOSITORY, useClass: PostWriteRepositoryImpl },
-    { provide: POST_PREVIEW_CACHE_REPOSITORY, useClass: PostPreviewCacheRepositoryImpl },
+    { provide: POST_READ_REPOSITORY, useClass: PostReadRepository },
+    { provide: POST_WRITE_REPOSITORY, useClass: PostWriteRepository },
+    { provide: PAGINATED_POST_PREVIEWS_CACHE_REPOSITORY, useClass: PaginatedPostsCacheRepository },
     PostCacheToDtoMapper,
     PostDtoToDomainMapper,
     PostDomainToOrmMapper,

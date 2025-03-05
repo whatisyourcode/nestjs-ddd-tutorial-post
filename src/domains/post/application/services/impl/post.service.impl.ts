@@ -1,22 +1,27 @@
 import { Injectable, Inject } from "@nestjs/common";
 
-import PostService from "@/domains/post/application/services/post.service";
+import IPostService from "@/domains/post/application/services/post-service.interface";
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
-import PostReadRepository, { POST_READ_REPOSITORY } from "@/domains/post/domain/repositories/post-read.repository";
-import PostPreviewCacheRepository, {
-  POST_PREVIEW_CACHE_REPOSITORY,
-} from "@/domains/post/domain/repositories/post-preview-cache.repository";
+import IPostReadRepository, {
+  POST_READ_REPOSITORY,
+} from "@/domains/post/domain/repositories/post-read-repository.interface";
+import IPaginatedPostPreviewsCacheRepository, {
+  PAGINATED_POST_PREVIEWS_CACHE_REPOSITORY,
+} from "@/domains/post/domain/repositories/paginated-post-previews-cache-repository.interface";
 
 @Injectable()
-export default class PostServiceImpl implements PostService {
+export default class PostServiceImpl implements IPostService {
   constructor(
-    @Inject(POST_READ_REPOSITORY) private readonly postReadRepository: PostReadRepository,
-    @Inject(POST_PREVIEW_CACHE_REPOSITORY) private readonly postPreviewCacheRepository: PostPreviewCacheRepository,
+    @Inject(POST_READ_REPOSITORY)
+    private readonly postReadRepository: IPostReadRepository,
+    @Inject(PAGINATED_POST_PREVIEWS_CACHE_REPOSITORY)
+    private readonly paginatedPostPreviewsCacheRepository: IPaginatedPostPreviewsCacheRepository,
   ) {}
 
-  async refreshRecentPostPreviews(): Promise<void> {
-    const recentPostMap: Map<number, PostPreviewDto[]> = await this.postReadRepository.getRecentPosts();
+  async refreshPaginatedRecentPostsCache(): Promise<void> {
+    const recentPostsMap: Map<number, PostPreviewDto[]> =
+      await this.postReadRepository.getPaginatedRecentPostPreviews();
 
-    await this.postPreviewCacheRepository.set(recentPostMap);
+    await this.paginatedPostPreviewsCacheRepository.set(recentPostsMap);
   }
 }
