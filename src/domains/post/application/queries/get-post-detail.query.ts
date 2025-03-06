@@ -1,4 +1,6 @@
-export default class GetPostDetailQuery {
+import { IQuery } from "@nestjs/cqrs";
+
+export default class GetPostDetailQuery implements IQuery {
   readonly postId: number;
 
   constructor(postId: number) {

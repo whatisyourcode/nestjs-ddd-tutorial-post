@@ -1,12 +1,14 @@
 import { Module } from "@nestjs/common";
 
-import redisConfig, { REDIS_INSTANCE } from "@/shared/configs/redis.config";
+import RedisConfig, { REDIS_INSTANCE } from "@/shared/configs/redis.config";
 
 @Module({
   providers: [
+    RedisConfig,
     {
       provide: REDIS_INSTANCE,
-      useFactory: redisConfig,
+      inject: [RedisConfig],
+      useFactory: (config: RedisConfig) => config.createRedisInstance(),
     },
   ],
   exports: [REDIS_INSTANCE],
