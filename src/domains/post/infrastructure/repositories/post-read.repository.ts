@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-
 import { RECENT_PAGE_LENGTH, PAGE_SIZE } from "@/domains/post/domain/constants/post.constant";
 
 import PostDetailDto from "@/domains/post/application/dtos/post-detail.dto";

@@ -38,7 +38,6 @@ export default class PaginatedPostsCacheRepository implements IPaginatedPostPrev
     if (!values) {
       return null;
     }
-
     const result: PostPreviewDto[] = values.map((value) => this.postCacheToDtoMapper.previewCacheToPreviewDto(value));
 
     return result;

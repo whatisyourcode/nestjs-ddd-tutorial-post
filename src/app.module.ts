@@ -12,7 +12,7 @@ import RedisModule from "@/cache/redis.module";
 import MemberModule from "@/domains/member/member.module";
 import PostModule from "@/domains/post/post.module";
 import CommentModule from "@/domains/comment/comment.module";
-import ImageModule from "@/domains/image/image.module";
+import ImageModule from "@/domains/member/image.module";
 import AppController from "@/app.controller";
 
 @Module({
