@@ -6,6 +6,7 @@ import IPostService, { POST_SERVICE } from "@/domains/post/application/services/
 import PaginatedPostPreviewsResDto from "@/domains/post/application/dtos/response/paginated-post-previews-res.dto";
 import PostPreviewDto from "@/domains/post/application/dtos/post-preview.dto";
 import { RECENT_PAGE_LENGTH } from "@/domains/post/domain/constants/post.constant";
+import InvalidPageException from "@/domains/post/domain/exceptions/invalid-page.exception";
 import IPostReadRepository, {
   POST_READ_REPOSITORY,
 } from "@/domains/post/domain/repositories/post-read-repository.interface";
@@ -26,21 +27,26 @@ export default class GetPaginatedPostPreviewsHandler implements IQueryHandler<Ge
 
   async execute(query: GetPaginatedPostPreviewsQuery): Promise<PaginatedPostPreviewsResDto> {
     const { page } = query;
+    const pageCount: number = await this.postService.getPageCount();
+    if (page < 0 || page > pageCount) {
+      throw new InvalidPageException();
+    }
+
     if (page > RECENT_PAGE_LENGTH) {
       const postPreviewDtos: PostPreviewDto[] = await this.postReadRepository.getPaginatedPostPreviews(page);
 
-      return new PaginatedPostPreviewsResDto(postPreviewDtos);
+      return new PaginatedPostPreviewsResDto(pageCount, page, postPreviewDtos);
     }
 
     const cachedPostPreviewDtos: PostPreviewDto[] | null = await this.paginatedPostPreviewsCacheRepository.get(page);
-    if (!cachedPostPreviewDtos) {
-      await this.postService.refreshPaginatedRecentPostsCache();
-
-      const postPreviewDtos: PostPreviewDto[] = (await this.paginatedPostPreviewsCacheRepository.get(page)) || [];
-
-      return new PaginatedPostPreviewsResDto(postPreviewDtos);
+    if (cachedPostPreviewDtos) {
+      return new PaginatedPostPreviewsResDto(pageCount, page, cachedPostPreviewDtos);
     }
 
-    return new PaginatedPostPreviewsResDto(cachedPostPreviewDtos);
+    await this.postService.refreshPaginatedRecentPostsCache();
+
+    const postPreviewDtos: PostPreviewDto[] = (await this.paginatedPostPreviewsCacheRepository.get(page)) || [];
+
+    return new PaginatedPostPreviewsResDto(pageCount, page, postPreviewDtos);
   }
 }

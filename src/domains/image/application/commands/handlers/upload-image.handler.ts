@@ -2,6 +2,7 @@ import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
 import UploadImageCommand from "@/domains/image/application/commands/upload-image.command";
+import UploadImageResDto from "@/domains/image/application/dtos/response/upload-image-res.dto";
 import ImageEntity from "@/domains/image/domain/entities/image.entity";
 import IImageUploadRepository, {
   IMAGE_UPLOAD_REPOSITORY,
@@ -14,13 +15,13 @@ export default class UploadImageHandler implements ICommandHandler<UploadImageCo
     private readonly imageUploadRepository: IImageUploadRepository,
   ) {}
 
-  async execute(command: UploadImageCommand): Promise<string> {
+  async execute(command: UploadImageCommand): Promise<UploadImageResDto> {
     const { image, uploadImageReqDto } = command;
     const { dir } = uploadImageReqDto;
 
     const entity: ImageEntity = ImageEntity.create({ image });
     const imageUrl: string = await this.imageUploadRepository.upload(entity, dir);
 
-    return imageUrl;
+    return new UploadImageResDto(imageUrl);
   }
 }

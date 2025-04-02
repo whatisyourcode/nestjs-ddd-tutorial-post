@@ -15,7 +15,8 @@ import PostPreviewRaw from "@/domains/post/infrastructure/raws/post-preview.raw"
 @Injectable()
 export default class PostReadRepository implements IPostReadRepository {
   constructor(
-    @InjectRepository(PostOrmEntity) private readonly repository: Repository<PostOrmEntity>,
+    @InjectRepository(PostOrmEntity)
+    private readonly repository: Repository<PostOrmEntity>,
     private readonly postRawToDtoMapper: PostRawToDtoMapper,
   ) {}
 

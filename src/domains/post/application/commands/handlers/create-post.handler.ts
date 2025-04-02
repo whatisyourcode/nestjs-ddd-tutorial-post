@@ -22,12 +22,13 @@ export default class CreatePostHandler implements ICommandHandler<CreatePostComm
 
   @Transactional()
   async execute(command: CreatePostCommand): Promise<void> {
-    const { authorId, createPostReqDto } = command;
-    const { post } = createPostReqDto;
+    const { createPostReqDto } = command;
+    const { authorId, post } = createPostReqDto;
 
     const entity: CreatePostEntity = this.postDtoToDomainMapper.createDtoToCreateDomain(post, authorId);
     await this.postWriteRepository.create(entity);
 
+    await this.postService.refreshPageCount();
     await this.postService.refreshPaginatedRecentPostsCache();
   }
 }

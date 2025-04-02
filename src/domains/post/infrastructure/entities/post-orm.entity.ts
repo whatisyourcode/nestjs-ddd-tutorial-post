@@ -1,7 +1,8 @@
 import { Column, Entity } from "typeorm";
 
-import { MAX_TITLE_LENGTH } from "@/domains/post/domain/constants/post.constraint";
 import BaseOrmEntity from "@/shared/entities/base-orm.entity";
+
+import { MAX_TITLE_LENGTH } from "@/domains/post/domain/constants/post.constraint";
 
 @Entity("post")
 export default class PostOrmEntity extends BaseOrmEntity {

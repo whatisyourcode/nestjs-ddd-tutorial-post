@@ -12,6 +12,7 @@ import RedisModule from "@/cache/redis.module";
 import MemberModule from "@/domains/member/member.module";
 import PostModule from "@/domains/post/post.module";
 import CommentModule from "@/domains/comment/comment.module";
+import LikeModule from "@/domains/like/like.module";
 import ImageModule from "@/domains/image/image.module";
 import AppController from "@/app.controller";
 
@@ -39,6 +40,7 @@ import AppController from "@/app.controller";
     MemberModule,
     PostModule,
     CommentModule,
+    LikeModule,
     ImageModule,
   ],
   controllers: [AppController],

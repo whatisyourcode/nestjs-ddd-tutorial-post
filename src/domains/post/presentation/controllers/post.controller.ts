@@ -19,7 +19,7 @@ export default class PostController {
   @Post("create")
   @HttpCode(201)
   async createPosts(@Body() createPostReqDto: CreatePostReqDto): Promise<void> {
-    return await this.commandBus.execute(new CreatePostCommand(createPostReqDto, 1));
+    return await this.commandBus.execute(new CreatePostCommand(createPostReqDto));
   }
 
   @Get("list")

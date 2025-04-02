@@ -4,10 +4,8 @@ import CreatePostReqDto from "@/domains/post/application/dtos/request/create-pos
 
 export default class CreatePostCommand implements ICommand {
   readonly createPostReqDto: CreatePostReqDto;
-  readonly authorId: number;
 
-  constructor(createPostReqDto: CreatePostReqDto, authorId: number) {
+  constructor(createPostReqDto: CreatePostReqDto) {
     this.createPostReqDto = createPostReqDto;
-    this.authorId = authorId;
   }
 }
